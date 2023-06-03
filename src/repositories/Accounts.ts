@@ -87,7 +87,7 @@ export class AccountRepository {
         return { error: "Account not found" };
       }
 
-      await prismaClient.account.update({
+      const accountUpdated = await prismaClient.account.update({
         where: { id },
         data: {
           name,
@@ -95,7 +95,7 @@ export class AccountRepository {
         }
       });
 
-      return account;
+      return { account:  accountUpdated };
     } catch (error: any) {
       ErrorHandler(error);
     }
