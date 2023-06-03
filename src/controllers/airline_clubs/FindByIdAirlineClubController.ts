@@ -6,9 +6,13 @@ export class FindByIdAirlineClubController {
     const data: unknown = request.params;
     const { id } = data as Partial<IAirlineClub>;
 
-    const instance = new AirlineClubsRepository();
-    const result = await instance.findByIdAirlineClubService({ id });
+    try {
+      const instance = new AirlineClubsRepository();
+      const result = await instance.findByIdAirlineClubService({ id });
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

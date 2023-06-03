@@ -1,4 +1,5 @@
 import { prismaClient } from "../database/prismaClient";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export interface IAirlineClub {
   id: string;
@@ -40,8 +41,8 @@ export class AirlineClubsRepository {
       });
 
       return { airline_club };
-    } catch (error) {
-      return error;
+    } catch (error: any) {
+      ErrorHandler(error);
     }
   }
 
@@ -60,7 +61,7 @@ export class AirlineClubsRepository {
 
       return { message: "Airline club enabled" };
     } catch ( error: any) {
-      return { error: error.message };
+      ErrorHandler(error);
     }
   }
   
@@ -79,7 +80,7 @@ export class AirlineClubsRepository {
 
       return { message: "Airline club disabled" };
     } catch (error: any) {
-      return { error: error.message };
+      ErrorHandler(error);
     }
   }
 
@@ -97,8 +98,8 @@ export class AirlineClubsRepository {
       }
 
       return { airline_club };
-    } catch (error) {
-      return error;
+    } catch (error: any) {
+      ErrorHandler(error);
     }
   }
 
@@ -111,8 +112,8 @@ export class AirlineClubsRepository {
       });
 
       return { airline_clubs };
-    } catch (error) {
-      return error;
+    } catch (error: any) {
+      ErrorHandler(error);
     }
   }
 }

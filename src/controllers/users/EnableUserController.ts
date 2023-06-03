@@ -10,9 +10,13 @@ export class EnableUserController {
       return response.status(400).json({ message: "Missing id" });
     }
 
-    const instance = new UserRepository();
-    const result = await instance.enableUserService({ id });
+    try {
+      const instance = new UserRepository();
+      const result = await instance.enableUserService({ id });
 
-    return response.json( result );
+      return response.json( result );
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

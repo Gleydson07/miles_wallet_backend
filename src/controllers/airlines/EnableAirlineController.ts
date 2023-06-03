@@ -10,9 +10,13 @@ export class EnableAirlineController {
       return response.status(400).json({ message: "Missing id" });
     }
 
-    const instance = new AirlineRepository();
-    const result = await instance.enableAirlineService({ id });
+    try {
+      const instance = new AirlineRepository();
+      const result = await instance.enableAirlineService({ id });
 
-    return response.json( result );
+      return response.json( result );
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

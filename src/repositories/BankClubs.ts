@@ -1,4 +1,5 @@
 import { prismaClient } from "../database/prismaClient";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export interface IBankClub {
   id: string;
@@ -28,8 +29,8 @@ export class BankClubsRepository {
       });
 
       return { bank_club };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -47,8 +48,8 @@ export class BankClubsRepository {
       });
 
       return { message: "Bank club enabled" };
-    } catch ( error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
   
@@ -66,8 +67,8 @@ export class BankClubsRepository {
       });
 
       return { message: "Bank club disabled" };
-    } catch (error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -80,8 +81,8 @@ export class BankClubsRepository {
       }
 
       return { bank_club };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -90,8 +91,8 @@ export class BankClubsRepository {
       const bank_clubs = await prismaClient.bankClub.findMany();
 
       return { bank_clubs };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 }

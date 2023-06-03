@@ -1,4 +1,5 @@
 import { prismaClient } from "../database/prismaClient";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export interface IAirline {
   id: string;
@@ -25,8 +26,8 @@ export class AirlineRepository {
       });
 
       return { airline };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -44,8 +45,8 @@ export class AirlineRepository {
       });
 
       return { message: "Airline enabled" };
-    } catch ( error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
   
@@ -63,8 +64,8 @@ export class AirlineRepository {
       });
 
       return { message: "Airline disabled" };
-    } catch (error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -77,8 +78,8 @@ export class AirlineRepository {
       }
 
       return { airline };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -87,8 +88,8 @@ export class AirlineRepository {
       const airlines = await prismaClient.airline.findMany();
 
       return { airlines };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 }

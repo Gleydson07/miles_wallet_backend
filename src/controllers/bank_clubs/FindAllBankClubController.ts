@@ -3,9 +3,13 @@ import { BankClubsRepository } from "../../repositories/BankClubs";
 
 export class FindAllBankClubController {
   async handle(request: Request, response: Response) {
-    const instance = new BankClubsRepository();
-    const result = await instance.findAllBankClubService();
+    try {
+      const instance = new BankClubsRepository();
+      const result = await instance.findAllBankClubService();
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

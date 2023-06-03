@@ -4,9 +4,13 @@ import { AirlineRepository } from "../../repositories/Airlines";
 export class FindAllAirlineController {
   async handle(request: Request, response: Response) {
     
-    const instance = new AirlineRepository();
-    const result = await instance.findAllAirlineService();
+    try {
+      const instance = new AirlineRepository();
+      const result = await instance.findAllAirlineService();
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

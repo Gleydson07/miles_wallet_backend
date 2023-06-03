@@ -10,9 +10,13 @@ export class EnableBankClubController {
       return response.status(400).json({ message: "Missing id" });
     }
 
-    const instance = new BankClubsRepository();
-    const result = await instance.enableBankClubService({ id });
+    try {
+      const instance = new BankClubsRepository();
+      const result = await instance.enableBankClubService({ id });
 
-    return response.json( result );
+      return response.json( result );
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

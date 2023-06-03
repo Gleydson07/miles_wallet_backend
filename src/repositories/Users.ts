@@ -1,4 +1,5 @@
 import { prismaClient } from "../database/prismaClient";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export interface IUser {
   id: string;
@@ -34,8 +35,8 @@ export class UserRepository {
       });
 
       return { user };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -53,8 +54,8 @@ export class UserRepository {
       });
 
       return { message: "User enabled" };
-    } catch ( error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
   
@@ -72,8 +73,8 @@ export class UserRepository {
       });
 
       return { message: "User disabled" };
-    } catch (error: any) {
-      return { error: error.message };
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -99,8 +100,8 @@ export class UserRepository {
       }
 
       return { user };
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 
@@ -118,8 +119,8 @@ export class UserRepository {
       });
 
       return user;
-    } catch (error) {
-      return error;
+    } catch ( error: any ) {
+      ErrorHandler(error);
     }
   }
 }

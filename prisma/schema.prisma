@@ -16,6 +16,8 @@ model User {
   createdAt                 DateTime              @default(now())                 @map("created_at")
   updatedAt                 DateTime              @updatedAt                      @map("updated_at")
 
+  accounts                  Account[]
+
   @@map("users")
 }
 
@@ -59,14 +61,20 @@ model BankClub {
   @@map("bank_clubs")
 }
 
-// model Account {
-//   id              String    @id @default(uuid())
-//   name            String
-//   createdAt       DateTime  @default(now())
-//   updatedAt       DateTime  @updatedAt
+model Account {
+  id                        String                @id @default(uuid())
+  name                      String                @db.VarChar(80)
+  description               String                @db.VarChar(255)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
 
-//   @@map("accounts")
-// }
+  user                      User                  @relation(fields: [userId], references: [id])
+  userId                    String                @map("user_id")
+
+  @@unique([userId, name])
+
+  @@map("accounts")
+}
 
 // model Transaction {
 //   id              String    @id @default(uuid())
@@ -86,6 +94,12 @@ model BankClub {
 //   updatedAt       DateTime  @updatedAt
 
 //   @@map("wallets")
+// }
+
+// enum RegistrationType {
+//   RG
+//   CPF
+//   CNH
 // }
 
 // enum TransactionType {

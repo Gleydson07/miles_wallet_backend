@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { IUser, UserRepository } from "../../repositories/Users";
+import { IAccount, AccountRepository } from "../../repositories/Accounts";
 
-export class FindByEmailUserController {
+export class FindByIdAccountController {
   async handle(request: Request, response: Response) {
     const data: unknown = request.params;
-    const { email } = data as Partial<IUser>;
+    const { id } = data as Partial<IAccount>;
 
     try {
-      const instance = new UserRepository();
-      const result = await instance.findByEmailUserService({ email });
+      const instance = new AccountRepository();
+      const result = await instance.findByIdAccountService({ id });
 
       return response.json(result);
     } catch (error: any) {

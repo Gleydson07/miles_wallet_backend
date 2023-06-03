@@ -6,13 +6,17 @@ export class CreateBankClubController {
     const data: unknown = request.body;
     const { name, website, phone } = data as IBankClubCreate;
 
-    const instance = new BankClubsRepository();
-    const result = await instance.createBankClubService({
-      name,
-      website,
-      phone
-    });
+    try {
+      const instance = new BankClubsRepository();
+      const result = await instance.createBankClubService({
+        name,
+        website,
+        phone
+      });
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

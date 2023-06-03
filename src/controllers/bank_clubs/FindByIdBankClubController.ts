@@ -6,9 +6,13 @@ export class FindByIdBankClubController {
     const data: unknown = request.params;
     const { id } = data as Partial<IBankClub>;
 
-    const instance = new BankClubsRepository();
-    const result = await instance.findByIdBankClubService({ id });
+    try {
+      const instance = new BankClubsRepository();
+      const result = await instance.findByIdBankClubService({ id });
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

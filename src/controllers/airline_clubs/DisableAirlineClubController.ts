@@ -10,9 +10,13 @@ export class DisableAirlineClubController {
       return response.status(400).json({ message: "Missing id" });
     }
 
-    const instance = new AirlineClubsRepository();
-    const result = await instance.disableAirlineClubService({ id });
+    try {
+      const instance = new AirlineClubsRepository();
+      const result = await instance.disableAirlineClubService({ id });
 
-    return response.json( result );
+      return response.json( result );
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }

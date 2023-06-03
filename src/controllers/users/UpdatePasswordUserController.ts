@@ -9,9 +9,13 @@ export class UpdatePasswordUserController {
     const { email } = dataParams as Partial<IUser>;
     const { password } = dataBody as Partial<IUser>;
 
-    const instance = new UserRepository();
-    const result = await instance.updatePasswordUserService({ email, password });
+    try {
+      const instance = new UserRepository();
+      const result = await instance.updatePasswordUserService({ email, password });
 
-    return response.json(result);
+      return response.json(result);
+    } catch (error: any) {
+      return response.status(500).send({ message: error.message });
+    }
   }
 }
