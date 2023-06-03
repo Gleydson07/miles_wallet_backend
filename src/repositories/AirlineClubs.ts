@@ -45,7 +45,7 @@ export class AirlineClubsRepository {
     }
   }
 
-  async enableAirlineClubService({id}: Partial<IAirlineClub>) {
+  async enableAirlineClubService({ id }: Partial<IAirlineClub>) {
     try {
       const airline_club = await prismaClient.airlineClub.findUnique({ where: { id } });
 
@@ -64,7 +64,7 @@ export class AirlineClubsRepository {
     }
   }
   
-  async disableAirlineClubService({id}: Partial<IAirlineClub>) {
+  async disableAirlineClubService({ id }: Partial<IAirlineClub>) {
     try {
       const airline_club = await prismaClient.airlineClub.findUnique({ where: { id } });
 
@@ -105,7 +105,6 @@ export class AirlineClubsRepository {
   async findAllAirlineClubService() {
     try {
       const airline_clubs = await prismaClient.airlineClub.findMany({
-        where: { disabled: false },
         include: {
           airline: true
         }

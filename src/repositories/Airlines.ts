@@ -30,7 +30,7 @@ export class AirlineRepository {
     }
   }
 
-  async enableAirlineService({id}: Partial<IAirline>) {
+  async enableAirlineService({ id }: Partial<IAirline>) {
     try {
       const airline = await prismaClient.airline.findUnique({ where: { id } });
 
@@ -49,7 +49,7 @@ export class AirlineRepository {
     }
   }
   
-  async disableAirlineService({id}: Partial<IAirline>) {
+  async disableAirlineService({ id }: Partial<IAirline>) {
     try {
       const airline = await prismaClient.airline.findUnique({ where: { id } });
 

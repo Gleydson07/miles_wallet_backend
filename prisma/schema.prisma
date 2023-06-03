@@ -47,14 +47,17 @@ model AirlineClub {
   @@map("airline_clubs")
 }
 
-// model BankClub {
-//   id              String    @id @default(uuid())
-//   name            String
-//   createdAt       DateTime  @default(now())
-//   updatedAt       DateTime  @updatedAt
+model BankClub {
+  id                        String                @id @default(uuid())
+  name                      String  
+  website                   String?               @db.VarChar(255)
+  phone                     String?               @db.VarChar(30)
+  disabled                  Boolean               @default(false)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
 
-//   @@map("bank_clubs")
-// }
+  @@map("bank_clubs")
+}
 
 // model Account {
 //   id              String    @id @default(uuid())

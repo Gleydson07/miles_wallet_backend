@@ -39,7 +39,7 @@ export class UserRepository {
     }
   }
 
-  async enableUserService({id}: Partial<IUser>) {
+  async enableUserService({ id }: Partial<IUser>) {
     try {
       const user = await prismaClient.user.findUnique({ where: { id } });
 
@@ -58,7 +58,7 @@ export class UserRepository {
     }
   }
   
-  async disableUserService({id}: Partial<IUser>) {
+  async disableUserService({ id }: Partial<IUser>) {
     try {
       const user = await prismaClient.user.findUnique({ where: { id } });
 
