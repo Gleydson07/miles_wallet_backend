@@ -1,0 +1,18 @@
+import { Request, Response } from "express";
+import { IUserCreate, UserRepository } from "../../repositories/Users";
+
+export class CreateUserController {
+  async handle(request: Request, response: Response) {
+    const data: unknown = request.body;
+    const { name, email, password } = data as IUserCreate;
+
+    const instance = new UserRepository();
+    const result = await instance.createUserService({
+      name,
+      email,
+      password
+    });
+
+    return response.json(result);
+  }
+}

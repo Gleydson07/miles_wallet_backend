@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id                        String                @id @default(uuid())
+  email                     String                @unique
+  name                      String                @db.VarChar(255)
+  password                  String
+  disabled                  Boolean               @default(false)
+  createdAt                 DateTime              @default(now())                 @map("created_at")
+  updatedAt                 DateTime              @updatedAt                      @map("updated_at")
+
+  @@map("users")
+}
+
+model Airline {
+  id                        String                @id @default(uuid())
+  name                      String                @unique @db.VarChar(80)
+  website                   String?               @db.VarChar(255)
+  disabled                  Boolean               @default(false)
+  createdAt                 DateTime              @default(now())                 @map("created_at")
+  updatedAt                 DateTime              @updatedAt                      @map("updated_at")
+
+  airlineClub               AirlineClub?
+
+  @@map("airlines")
+}
+
+model AirlineClub {
+  id                        String                @id @default(uuid())
+  name                      String
+  website                   String?               @db.VarChar(255)
+  phone                     String?               @db.VarChar(30)
+  disabled                  Boolean               @default(false)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+
+  airline                   Airline               @relation(fields: [airlineId], references: [id])
+  airlineId                 String                @unique                          @map("airline_id")
+
+  @@map("airline_clubs")
+}
+
+// model BankClub {
+//   id              String    @id @default(uuid())
+//   name            String
+//   createdAt       DateTime  @default(now())
+//   updatedAt       DateTime  @updatedAt
+
+//   @@map("bank_clubs")
+// }
+
+// model Account {
+//   id              String    @id @default(uuid())
+//   name            String
+//   createdAt       DateTime  @default(now())
+//   updatedAt       DateTime  @updatedAt
+
+//   @@map("accounts")
+// }
+
+// model Transaction {
+//   id              String    @id @default(uuid())
+//   type            TransactionType    
+//   amount          Int
+//   price           Int
+//   createdAt       DateTime  @default(now())
+//   updatedAt       DateTime  @updatedAt
+
+//   @@map("transactions")
+// }
+
+// model Wallet {
+//   id              String    @id @default(uuid())
+//   name            String
+//   createdAt       DateTime  @default(now())
+//   updatedAt       DateTime  @updatedAt
+
+//   @@map("wallets")
+// }
+
+// enum TransactionType {
+//   INCOME
+//   EXPENSE
+// }
