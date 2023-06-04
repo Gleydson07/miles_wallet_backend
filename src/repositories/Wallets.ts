@@ -11,6 +11,7 @@ export interface IWallet {
   accountId: string;
   bankClubId: string;
   airlineClubId: string;
+  walletTypeId: string;
 }
 
 export interface IWalletCreate {
@@ -20,6 +21,7 @@ export interface IWalletCreate {
   accountId: string;
   bankClubId: string;
   airlineClubId: string;
+  walletTypeId: string;
 }
 
 export class WalletRepository {
@@ -29,7 +31,8 @@ export class WalletRepository {
     balance,
     accountId,
     bankClubId,
-    airlineClubId
+    airlineClubId,
+    walletTypeId
   }: IWalletCreate) {
     try {
       if (bankClubId && airlineClubId) {
@@ -57,7 +60,8 @@ export class WalletRepository {
           balance,
           accountId,
           bankClubId,
-          airlineClubId
+          airlineClubId,
+          walletTypeId
         },
         include: {
           account: {

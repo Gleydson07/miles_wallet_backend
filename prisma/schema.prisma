@@ -80,6 +80,19 @@ model Account {
   @@map("accounts")
 
   @@unique([userId, name])
+} 
+
+model WalletType {
+  id                        String                @id @default(uuid())
+  name                      String                @unique @db.VarChar(80)
+  description               String?               @db.VarChar(255)
+  disabled                  Boolean               @default(false)
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+
+  wallet                    Wallet[]
+
+  @@map("wallet_types")
 }
 
 model Wallet {
@@ -89,6 +102,9 @@ model Wallet {
   balance                   Decimal?              @default(0)                         @map("initial_balance")
   createdAt                 DateTime              @default(now())
   updatedAt                 DateTime              @updatedAt
+
+  walletType                WalletType            @relation(fields: [walletTypeId], references: [id])
+  walletTypeId              String                @map("wallet_type_id")
 
   account                   Account               @relation(fields: [accountId], references: [id])
   accountId                 String                @map("account_id")
