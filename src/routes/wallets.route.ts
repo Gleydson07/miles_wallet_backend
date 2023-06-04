@@ -20,6 +20,6 @@ walletsRouter.delete("/:id", deleteWalletController.handle);
 walletsRouter.get("/:id", findByIdWalletController.handle);
 walletsRouter.get("/:accountId/account", findManyByAccountIdWalletController.handle);
 walletsRouter.put("/:id", updateWalletController.handle);
-walletsRouter.put("/:id/balance", updateBalanceWalletController.handle);
+walletsRouter.patch("/:id/balance", updateBalanceWalletController.handle);
 
 export { walletsRouter };

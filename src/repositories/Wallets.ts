@@ -174,11 +174,7 @@ export class WalletRepository {
         }
       });
 
-      if (!wallet) {
-        return { error: "Wallet not found" };
-      }
-
-      return { wallet };
+      return wallet;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -255,6 +251,10 @@ export class WalletRepository {
         where: { id },
         data: {
           balance
+        },
+        select: {
+          id: true,
+          balance: true
         }
       });
 

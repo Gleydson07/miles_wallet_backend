@@ -11,7 +11,7 @@ export class UpdateBalanceWalletController {
 
     try {
       const instance = new WalletRepository();
-      const result = await instance.updateWalletService({ id, balance });
+      const result = await instance.updateBalanceWalletService({ id, balance });
 
       return response.json(result);
     } catch (error: any) {
