@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id                        String                @id @default(uuid())
-  email                     String                @unique
   name                      String                @db.VarChar(255)
+  email                     String                @unique
   password                  String
   disabled                  Boolean               @default(false)
   createdAt                 DateTime              @default(now())                 @map("created_at")
@@ -40,11 +40,11 @@ model AirlineClub {
   website                   String?               @db.VarChar(255)
   phone                     String?               @db.VarChar(30)
   disabled                  Boolean               @default(false)
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
+  createdAt                 DateTime              @default(now())                 @map("created_at")
+  updatedAt                 DateTime              @updatedAt                      @map("updated_at")
 
   airline                   Airline               @relation(fields: [airlineId], references: [id])
-  airlineId                 String                @unique                          @map("airline_id")
+  airlineId                 String                @unique                         @map("airline_id")
 
   wallet                    Wallet[]
 
@@ -57,8 +57,8 @@ model BankClub {
   website                   String?               @db.VarChar(255)
   phone                     String?               @db.VarChar(30)
   disabled                  Boolean               @default(false)
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
+  createdAt                 DateTime              @default(now())                   @map("created_at")
+  updatedAt                 DateTime              @updatedAt                        @map("updated_at")
 
   wallet                    Wallet[]
 
@@ -68,9 +68,9 @@ model BankClub {
 model Account {
   id                        String                @id @default(uuid())
   name                      String                @db.VarChar(80)
-  description               String                @db.VarChar(255)
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
+  description               String?               @db.VarChar(255)
+  createdAt                 DateTime              @default(now())                   @map("created_at")
+  updatedAt                 DateTime              @updatedAt                        @map("updated_at")
 
   user                      User                  @relation(fields: [userId], references: [id])
   userId                    String                @map("user_id")
@@ -87,8 +87,8 @@ model WalletType {
   name                      String                @unique @db.VarChar(80)
   description               String?               @db.VarChar(255)
   disabled                  Boolean               @default(false)
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
+  createdAt                 DateTime              @default(now())                    @map("created_at")
+  updatedAt                 DateTime              @updatedAt                         @map("updated_at")
 
   wallet                    Wallet[]
 
@@ -100,8 +100,8 @@ model Wallet {
   name                      String
   description               String?               @db.VarChar(255)
   balance                   Decimal?              @default(0)                         @map("initial_balance")
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
+  createdAt                 DateTime              @default(now())                     @map("created_at")
+  updatedAt                 DateTime              @updatedAt                          @map("updated_at")
 
   walletType                WalletType            @relation(fields: [walletTypeId], references: [id])
   walletTypeId              String                @map("wallet_type_id")

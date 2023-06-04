@@ -27,7 +27,7 @@ export class AccountRepository {
         }
       });
 
-      return { account };
+      return account;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -38,14 +38,14 @@ export class AccountRepository {
       const account = await prismaClient.account.findUnique({ where: { id } });
 
       if (!account) {
-        return { error: "Account not found" };
+        throw new Error("Account not found");
       }
 
       await prismaClient.account.delete({
         where: { id: account?.id },
       });
 
-      return { message: "Account deleted" };
+      return "Account deleted";
     } catch ( error: any) {
       ErrorHandler(error);
     }
@@ -56,10 +56,10 @@ export class AccountRepository {
       const account = await prismaClient.account.findUnique({ where: { id } });
 
       if (!account) {
-        return { error: "Account not found" };
+        throw new Error("Account not found");
       }
 
-      return { account };
+      return account;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -70,10 +70,10 @@ export class AccountRepository {
       const accounts = await prismaClient.account.findMany({ where: { userId } });
 
       if (!accounts.length) {
-        return { error: "Accounts not found" };
+        throw new Error("Accounts not found");
       }
 
-      return { accounts };
+      return accounts;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -84,7 +84,7 @@ export class AccountRepository {
       const account = await this.findByIdAccountService({ id });
 
       if (!account) {
-        return { error: "Account not found" };
+        throw new Error("Account not found");
       }
 
       const accountUpdated = await prismaClient.account.update({
@@ -95,7 +95,7 @@ export class AccountRepository {
         }
       });
 
-      return { account:  accountUpdated };
+      return accountUpdated;
     } catch (error: any) {
       ErrorHandler(error);
     }

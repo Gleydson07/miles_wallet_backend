@@ -40,7 +40,7 @@ export class AirlineClubsRepository {
         },
       });
 
-      return { airline_club };
+      return airline_club;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -51,7 +51,7 @@ export class AirlineClubsRepository {
       const airline_club = await prismaClient.airlineClub.findUnique({ where: { id } });
 
       if (!airline_club) {
-        return { error: "Airline club not found" };
+        throw new Error("Airline club not found");
       }
 
       await prismaClient.airlineClub.update({
@@ -59,7 +59,7 @@ export class AirlineClubsRepository {
         data: { disabled: false }
       });
 
-      return { message: "Airline club enabled" };
+      return "Airline club enabled";
     } catch ( error: any) {
       ErrorHandler(error);
     }
@@ -70,7 +70,7 @@ export class AirlineClubsRepository {
       const airline_club = await prismaClient.airlineClub.findUnique({ where: { id } });
 
       if (!airline_club) {
-        return { error: "Airline not found" };
+        throw new Error("Airline not found");
       }
 
       await prismaClient.airlineClub.update({
@@ -78,7 +78,7 @@ export class AirlineClubsRepository {
         data: { disabled: true }
       });
 
-      return { message: "Airline club disabled" };
+      return "Airline club disabled";
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -94,10 +94,10 @@ export class AirlineClubsRepository {
       });
 
       if (!airline_club) {
-        return { error: "Airline club not found" };
+        throw new Error("Airline club not found");
       }
 
-      return { airline_club };
+      return airline_club;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -111,7 +111,7 @@ export class AirlineClubsRepository {
         }
       });
 
-      return { airline_clubs };
+      return airline_clubs;
     } catch (error: any) {
       ErrorHandler(error);
     }

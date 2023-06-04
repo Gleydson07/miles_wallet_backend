@@ -1,5 +1,6 @@
 import { prismaClient } from "../database/prismaClient";
 import { ErrorHandler } from "../utils/ErrorHandler";
+import { WalletTypeRepository } from "./WalletTypes";
 
 export interface IWallet {
   id: string;
@@ -21,7 +22,6 @@ export interface IWalletCreate {
   accountId: string;
   bankClubId: string;
   airlineClubId: string;
-  walletTypeId: string;
 }
 
 export class WalletRepository {
@@ -31,16 +31,11 @@ export class WalletRepository {
     balance,
     accountId,
     bankClubId,
-    airlineClubId,
-    walletTypeId
+    airlineClubId
   }: IWalletCreate) {
     try {
       if (bankClubId && airlineClubId) {
         throw new Error("You can't create a wallet with bank and airline club");
-      }
-
-      if (!bankClubId && !airlineClubId) {
-        throw new Error("You must create a wallet with bank or airline club");
       }
 
       const alreadyExists = await this.findOneByKeysWalletService({
@@ -53,6 +48,17 @@ export class WalletRepository {
         throw new Error("Wallet already exists");
       }
 
+      const walletTypeRepository = new WalletTypeRepository();
+      const walletTypeList = await walletTypeRepository.findAllWalletTypeService();
+
+      if (!walletTypeList?.length) {
+        throw new Error("You must create a wallet type");
+      }
+      
+      let walletTypeIdSelected = walletTypeList[0].id;
+      if (bankClubId) walletTypeIdSelected = walletTypeList[1].id;
+      if (airlineClubId) walletTypeIdSelected = walletTypeList[2].id;
+
       const wallet = await prismaClient.wallet.create({
         data: {
           name,
@@ -61,7 +67,7 @@ export class WalletRepository {
           accountId,
           bankClubId,
           airlineClubId,
-          walletTypeId
+          walletTypeId: walletTypeIdSelected
         },
         include: {
           account: {
@@ -83,10 +89,17 @@ export class WalletRepository {
               name: true
             }
           },
+          walletType: {
+            select: {
+              id: true,
+              name: true,
+              description: true
+            }
+          },
         }
       });
 
-      return { wallet };
+      return wallet;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -97,14 +110,14 @@ export class WalletRepository {
       const wallet = await prismaClient.wallet.findUnique({ where: { id } });
 
       if (!wallet) {
-        return { error: "Wallet not found" };
+        throw new Error("Wallet not found");
       }
 
       await prismaClient.wallet.delete({
         where: { id: wallet?.id },
       });
 
-      return { message: "Wallet deleted" };
+      return "Wallet deleted";
     } catch ( error: any) {
       ErrorHandler(error);
     }
@@ -134,14 +147,21 @@ export class WalletRepository {
               name: true
             }
           },
+          walletType: {
+            select: {
+              id: true,
+              name: true,
+              description: true
+            }
+          },
         }
       });
 
       if (!wallet) {
-        return { error: "Wallet not found" };
+        throw new Error("Wallet not found");
       }
 
-      return { wallet };
+      return wallet;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -152,8 +172,10 @@ export class WalletRepository {
       const wallet = await prismaClient.wallet.findFirst({
         where: {
           accountId,
-          bankClubId,
-          airlineClubId
+          AND: [
+            { bankClubId: bankClubId || null },
+            { airlineClubId: airlineClubId || null }
+          ],
         },
         include: {
           account: {
@@ -173,6 +195,13 @@ export class WalletRepository {
             select: {
               id: true,
               name: true
+            }
+          },
+          walletType: {
+            select: {
+              id: true,
+              name: true,
+              description: true
             }
           },
         }
@@ -208,14 +237,21 @@ export class WalletRepository {
               name: true
             }
           },
+          walletType: {
+            select: {
+              id: true,
+              name: true,
+              description: true
+            }
+          },
         }
       });
 
       if (!wallets.length) {
-        return { error: "Wallets not found" };
+        throw new Error("Wallets not found");
       }
 
-      return { wallets };
+      return wallets;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -226,7 +262,7 @@ export class WalletRepository {
       const wallet = await this.findByIdWalletService({ id });
 
       if (!wallet) {
-        return { error: "Wallet not found" };
+        throw new Error("Wallet not found");
       }
 
       const walletUpdated = await prismaClient.wallet.update({
@@ -237,7 +273,7 @@ export class WalletRepository {
         }
       });
 
-      return { wallet:  walletUpdated };
+      return walletUpdated;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -248,7 +284,7 @@ export class WalletRepository {
       const wallet = await this.findByIdWalletService({ id });
 
       if (!wallet) {
-        return { error: "Wallet not found" };
+        throw new Error("Wallet not found");
       }
 
       const walletUpdated = await prismaClient.wallet.update({
@@ -262,7 +298,7 @@ export class WalletRepository {
         }
       });
 
-      return { wallet:  walletUpdated };
+      return walletUpdated;
     } catch (error: any) {
       ErrorHandler(error);
     }

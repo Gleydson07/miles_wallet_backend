@@ -34,7 +34,7 @@ export class UserRepository {
         }
       });
 
-      return { user };
+      return user;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -45,7 +45,7 @@ export class UserRepository {
       const user = await prismaClient.user.findUnique({ where: { id } });
 
       if (!user) {
-        return { error: "User not found" };
+        throw new Error("User not found");
       }
 
       await prismaClient.user.update({
@@ -53,7 +53,7 @@ export class UserRepository {
         data: { disabled: false }
       });
 
-      return { message: "User enabled" };
+      return "User enabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -64,7 +64,7 @@ export class UserRepository {
       const user = await prismaClient.user.findUnique({ where: { id } });
 
       if (!user) {
-        return { error: "User not found" };
+        throw new Error("User not found");
       }
 
       await prismaClient.user.update({
@@ -72,7 +72,7 @@ export class UserRepository {
         data: { disabled: true }
       });
 
-      return { message: "User disabled" };
+      return "User disabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -96,10 +96,10 @@ export class UserRepository {
       });
 
       if (!user) {
-        return { error: "User not found" };
+        throw new Error("User not found");
       }
 
-      return { user };
+      return user;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -110,7 +110,7 @@ export class UserRepository {
       const user = await this.findByEmailUserService({ email });
 
       if (!user) {
-        return { error: "User not found" };
+        throw new Error("User not found");
       }
 
       await prismaClient.user.update({

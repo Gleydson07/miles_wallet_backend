@@ -28,7 +28,7 @@ export class BankClubsRepository {
         }
       });
 
-      return { bank_club };
+      return bank_club;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -39,7 +39,7 @@ export class BankClubsRepository {
       const bank_club = await prismaClient.bankClub.findUnique({ where: { id } });
 
       if (!bank_club) {
-        return { error: "Bank club not found" };
+        throw new Error("Bank club not found");
       }
 
       await prismaClient.bankClub.update({
@@ -47,7 +47,7 @@ export class BankClubsRepository {
         data: { disabled: false }
       });
 
-      return { message: "Bank club enabled" };
+      return "Bank club enabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -58,7 +58,7 @@ export class BankClubsRepository {
       const bank_club = await prismaClient.bankClub.findUnique({ where: { id } });
 
       if (!bank_club) {
-        return { error: "Bank not found" };
+        throw new Error("Bank not found");
       }
 
       await prismaClient.bankClub.update({
@@ -66,7 +66,7 @@ export class BankClubsRepository {
         data: { disabled: true }
       });
 
-      return { message: "Bank club disabled" };
+      return "Bank club disabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -77,10 +77,10 @@ export class BankClubsRepository {
       const bank_club = await prismaClient.bankClub.findUnique({ where: { id } });
 
       if (!bank_club) {
-        return { error: "Bank club not found" };
+        throw new Error("Bank club not found");
       }
 
-      return { bank_club };
+      return bank_club;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -90,7 +90,7 @@ export class BankClubsRepository {
     try {
       const bank_clubs = await prismaClient.bankClub.findMany();
 
-      return { bank_clubs };
+      return bank_clubs;
     } catch ( error: any ) {
       ErrorHandler(error);
     }

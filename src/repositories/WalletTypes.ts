@@ -28,7 +28,7 @@ export class WalletTypeRepository {
         }
       });
 
-      return { walletType };
+      return walletType;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -39,14 +39,14 @@ export class WalletTypeRepository {
       const walletType = await prismaClient.walletType.findUnique({ where: { id } });
 
       if (!walletType) {
-        return { error: "WalletType not found" };
+        throw new Error("WalletType not found");
       }
 
       await prismaClient.walletType.delete({
         where: { id: walletType?.id },
       });
 
-      return { message: "WalletType deleted" };
+      return "WalletType deleted";
     } catch ( error: any) {
       ErrorHandler(error);
     }
@@ -59,10 +59,10 @@ export class WalletTypeRepository {
       });
 
       if (!walletType) {
-        return { error: "WalletType not found" };
+        throw new Error("WalletType not found");
       }
 
-      return { walletType };
+      return walletType;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -72,7 +72,7 @@ export class WalletTypeRepository {
     try {
       const walletTypes = await prismaClient.walletType.findMany();
 
-      return { walletTypes };
+      return walletTypes;
     } catch (error: any) {
       ErrorHandler(error);
     }
@@ -83,7 +83,7 @@ export class WalletTypeRepository {
       const walletType = await this.findByIdWalletTypeService({ id });
 
       if (!walletType) {
-        return { error: "WalletType not found" };
+        throw new Error("WalletType not found");
       }
 
       const walletTypeUpdated = await prismaClient.walletType.update({
@@ -94,7 +94,7 @@ export class WalletTypeRepository {
         }
       });
 
-      return { walletType:  walletTypeUpdated };
+      return walletTypeUpdated;
     } catch (error: any) {
       ErrorHandler(error);
     }

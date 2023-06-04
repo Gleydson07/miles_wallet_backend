@@ -25,7 +25,7 @@ export class AirlineRepository {
         }
       });
 
-      return { airline };
+      return airline;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -36,7 +36,7 @@ export class AirlineRepository {
       const airline = await prismaClient.airline.findUnique({ where: { id } });
 
       if (!airline) {
-        return { error: "Airline not found" };
+        throw new Error("Airline not found");
       }
 
       await prismaClient.airline.update({
@@ -44,7 +44,7 @@ export class AirlineRepository {
         data: { disabled: false }
       });
 
-      return { message: "Airline enabled" };
+      return "Airline enabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -55,7 +55,7 @@ export class AirlineRepository {
       const airline = await prismaClient.airline.findUnique({ where: { id } });
 
       if (!airline) {
-        return { error: "Airline not found" };
+        throw new Error("Airline not found");
       }
 
       await prismaClient.airline.update({
@@ -63,7 +63,7 @@ export class AirlineRepository {
         data: { disabled: true }
       });
 
-      return { message: "Airline disabled" };
+      return "Airline disabled";
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -74,10 +74,10 @@ export class AirlineRepository {
       const airline = await prismaClient.airline.findUnique({ where: { id } });
 
       if (!airline) {
-        return { error: "Airline not found" };
+        throw new Error("Airline not found");
       }
 
-      return { airline };
+      return airline;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
@@ -87,7 +87,7 @@ export class AirlineRepository {
     try {
       const airlines = await prismaClient.airline.findMany();
 
-      return { airlines };
+      return airlines;
     } catch ( error: any ) {
       ErrorHandler(error);
     }
