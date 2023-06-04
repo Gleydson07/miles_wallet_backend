@@ -46,6 +46,8 @@ model AirlineClub {
   airline                   Airline               @relation(fields: [airlineId], references: [id])
   airlineId                 String                @unique                          @map("airline_id")
 
+  wallet                    Wallet[]
+
   @@map("airline_clubs")
 }
 
@@ -57,6 +59,8 @@ model BankClub {
   disabled                  Boolean               @default(false)
   createdAt                 DateTime              @default(now())
   updatedAt                 DateTime              @updatedAt
+
+  wallet                    Wallet[]
 
   @@map("bank_clubs")
 }
@@ -71,29 +75,44 @@ model Account {
   user                      User                  @relation(fields: [userId], references: [id])
   userId                    String                @map("user_id")
 
+  wallet                    Wallet[]
+
   @@unique([userId, name])
 
   @@map("accounts")
 }
 
+model Wallet {
+  id                        String                @id @default(uuid())
+  name                      String
+  description               String?               @db.VarChar(255)
+  balance                   Float?                @default(0)                         @map("initial_balance")
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+
+  account                   Account               @relation(fields: [accountId], references: [id])
+  accountId                 String                @map("account_id")
+
+  bankClub                  BankClub?             @relation(fields: [bankClubId], references: [id])
+  bankClubId                String?               @map("bank_club_id")
+
+  airlineClub               AirlineClub?          @relation(fields: [airlineClubId], references: [id])
+  airlineClubId             String?               @map("airline_club_id")
+
+  @@unique([accountId, bankClubId, airlineClubId])
+
+  @@map("wallets")
+}
+
 // model Transaction {
 //   id              String    @id @default(uuid())
-//   type            TransactionType    
+//   type            TransactionType
 //   amount          Int
 //   price           Int
 //   createdAt       DateTime  @default(now())
 //   updatedAt       DateTime  @updatedAt
 
 //   @@map("transactions")
-// }
-
-// model Wallet {
-//   id              String    @id @default(uuid())
-//   name            String
-//   createdAt       DateTime  @default(now())
-//   updatedAt       DateTime  @updatedAt
-
-//   @@map("wallets")
 // }
 
 // enum RegistrationType {

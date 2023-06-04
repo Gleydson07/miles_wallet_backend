@@ -16,7 +16,7 @@ const updateAccountController = new UpdateAccountController();
 accountRouter.post("/", createAccountController.handle);
 accountRouter.delete("/:id", deleteAccountController.handle);
 accountRouter.get("/:id", findByIdAccountController.handle);
-accountRouter.get("/user/:userId", findManyByUserIdAccountController.handle);
+accountRouter.get("/:userId/user", findManyByUserIdAccountController.handle);
 accountRouter.put("/:id", updateAccountController.handle);
 
 export { accountRouter };
