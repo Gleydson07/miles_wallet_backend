@@ -11,7 +11,7 @@ model User {
   id                        String                @id @default(uuid())
   name                      String                @db.VarChar(255)
   email                     String                @unique
-  password                  String
+  password                  String                @db.VarChar(128)
   disabled                  Boolean               @default(false)
   createdAt                 DateTime              @default(now())                 @map("created_at")
   updatedAt                 DateTime              @updatedAt                      @map("updated_at")
@@ -36,7 +36,7 @@ model Airline {
 
 model AirlineClub {
   id                        String                @id @default(uuid())
-  name                      String
+  name                      String                @db.VarChar(80)
   website                   String?               @db.VarChar(255)
   phone                     String?               @db.VarChar(30)
   disabled                  Boolean               @default(false)
@@ -53,7 +53,7 @@ model AirlineClub {
 
 model BankClub {
   id                        String                @id @default(uuid())
-  name                      String  
+  name                      String                @db.VarChar(80)
   website                   String?               @db.VarChar(255)
   phone                     String?               @db.VarChar(30)
   disabled                  Boolean               @default(false)
@@ -97,7 +97,7 @@ model WalletType {
 
 model Wallet {
   id                        String                @id @default(uuid())
-  name                      String
+  name                      String                @db.VarChar(80)
   description               String?               @db.VarChar(255)
   balance                   Decimal?              @default(0)                         @map("initial_balance")
   createdAt                 DateTime              @default(now())                     @map("created_at")
@@ -115,27 +115,32 @@ model Wallet {
   airlineClub               AirlineClub?          @relation(fields: [airlineClubId], references: [id])
   airlineClubId             String?               @map("airline_club_id")
 
+  TransactionOrigin         Transaction[]         @relation("TransactionOrigin")
+  TransactionDestination    Transaction[]         @relation("TransactionDestination")
+
   @@map("wallets")
 }
 
-// model Transaction {
-//   id              String    @id @default(uuid())
-//   type            TransactionType
-//   amount          Int
-//   price           Int
-//   createdAt       DateTime  @default(now())
-//   updatedAt       DateTime  @updatedAt
+model Transaction {
+  id                        String                @id @default(uuid())
+  description               String?               @db.VarChar(255)
+  amountOrigin              Decimal               @map("amount_origin")
+  amountDestination         Decimal               @map("amount_destination")
+  value                     Decimal
+  createdAt                 DateTime              @default(now())                      @map("created_at")
+  updatedAt                 DateTime              @updatedAt                           @map("updated_at")
 
-//   @@map("transactions")
-// }
+  walletOrigin              Wallet                @relation("TransactionOrigin", fields: [walletOriginId], references: [id])
+  walletOriginId            String                @map("wallet_origin_id")
+
+  walletDestination         Wallet                @relation("TransactionDestination", fields: [walletDestinationId], references: [id])
+  walletDestinationId       String                @map("wallet_destination_id")
+
+  @@map("transactions")
+}
 
 // enum RegistrationType {
 //   RG
 //   CPF
 //   CNH
-// }
-
-// enum TransactionType {
-//   INCOME
-//   EXPENSE
 // }
