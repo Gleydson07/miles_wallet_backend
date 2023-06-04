@@ -33,11 +33,21 @@ export class WalletRepository {
   }: IWalletCreate) {
     try {
       if (bankClubId && airlineClubId) {
-        return { error: "You can't create a wallet with bank and airline club" };
+        throw new Error("You can't create a wallet with bank and airline club");
       }
 
       if (!bankClubId && !airlineClubId) {
-        return { error: "You must create a wallet with bank or airline club" };
+        throw new Error("You must create a wallet with bank or airline club");
+      }
+
+      const alreadyExists = await this.findOneByKeysWalletService({
+        accountId,
+        bankClubId,
+        airlineClubId
+      });
+
+      if (alreadyExists) {
+        throw new Error("Wallet already exists");
       }
 
       const wallet = await prismaClient.wallet.create({
@@ -100,6 +110,47 @@ export class WalletRepository {
     try {
       const wallet = await prismaClient.wallet.findUnique({
         where: { id },
+        include: {
+          account: {
+            select: {
+              id: true,
+              name: true,
+              description: true
+            }
+          },
+          bankClub: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          airlineClub: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+        }
+      });
+
+      if (!wallet) {
+        return { error: "Wallet not found" };
+      }
+
+      return { wallet };
+    } catch (error: any) {
+      ErrorHandler(error);
+    }
+  }
+
+  async findOneByKeysWalletService({ accountId, bankClubId, airlineClubId }: Partial<IWallet>) {
+    try {
+      const wallet = await prismaClient.wallet.findFirst({
+        where: {
+          accountId,
+          bankClubId,
+          airlineClubId
+        },
         include: {
           account: {
             select: {

@@ -2,8 +2,8 @@
 CREATE TABLE "wallets" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "description" VARCHAR(255) NOT NULL,
-    "initial_balance" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "description" VARCHAR(255),
+    "initial_balance" DECIMAL(65,30) DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "account_id" TEXT NOT NULL,
@@ -12,9 +12,6 @@ CREATE TABLE "wallets" (
 
     CONSTRAINT "wallets_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "wallets_account_id_bank_club_id_airline_club_id_key" ON "wallets"("account_id", "bank_club_id", "airline_club_id");
 
 -- AddForeignKey
 ALTER TABLE "wallets" ADD CONSTRAINT "wallets_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "accounts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

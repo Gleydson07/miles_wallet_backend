@@ -5,6 +5,9 @@ export function ErrorHandler(error: any) {
     const prismaError = error as Prisma.PrismaClientKnownRequestError;
     
     console.error(prismaError);
-    throw new Error(prismaError.code);
+    throw new Error(prismaError?.code);
   }
+  
+  console.error(error);
+  throw new Error(error?.message);
 }

@@ -11,7 +11,7 @@ CREATE TABLE "accounts" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "accounts_user_id_key" ON "accounts"("user_id");
+CREATE UNIQUE INDEX "accounts_user_id_name_key" ON "accounts"("user_id", "name");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
