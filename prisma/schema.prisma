@@ -2,6 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DB_URL")
@@ -126,7 +130,7 @@ model Transaction {
   description               String?               @db.VarChar(255)
   amountOrigin              Decimal               @map("amount_origin")
   amountDestination         Decimal               @map("amount_destination")
-  value                     Decimal
+  value                     Decimal?
   createdAt                 DateTime              @default(now())                      @map("created_at")
   updatedAt                 DateTime              @updatedAt                           @map("updated_at")
 

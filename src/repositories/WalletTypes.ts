@@ -1,6 +1,10 @@
 import { prismaClient } from "../database/prismaClient";
 import { ErrorHandler } from "../utils/ErrorHandler";
 
+// id: "1", name: "CASH",
+// id: "2", name: "POINTS",
+// id: "3", name: "MILES"
+
 export interface IWalletType {
   id: string;
   name: string;
@@ -56,6 +60,22 @@ export class WalletTypeRepository {
     try {
       const walletType = await prismaClient.walletType.findUnique({
         where: { id }
+      });
+
+      if (!walletType) {
+        throw new Error("WalletType not found");
+      }
+
+      return walletType;
+    } catch (error: any) {
+      ErrorHandler(error);
+    }
+  }
+
+  async findByNameWalletTypeService({ name }: Partial<IWalletType>) {
+    try {
+      const walletType = await prismaClient.walletType.findUnique({
+        where: { name }
       });
 
       if (!walletType) {

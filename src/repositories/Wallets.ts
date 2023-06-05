@@ -38,6 +38,10 @@ export class WalletRepository {
         throw new Error("You can't create a wallet with bank and airline club");
       }
 
+      if (!bankClubId && !airlineClubId) {
+        throw new Error("You must create a bank or airline club");
+      }
+
       const alreadyExists = await this.findOneByKeysWalletService({
         accountId,
         bankClubId,

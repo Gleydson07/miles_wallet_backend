@@ -23,8 +23,26 @@ export class AccountRepository {
         data: {
           name,
           description,
-          userId
-        }
+          userId,
+          wallet: {
+            create: {
+              name: "Carteira",
+              description: "Recursos financeiros",
+              walletType: {
+                connect: {
+                  name: "CASH",
+                },
+              },
+            },
+          },
+        },
+        include: {
+          wallet: {
+            include: {
+              walletType: true,
+            },
+          },
+        },
       });
 
       return account;
