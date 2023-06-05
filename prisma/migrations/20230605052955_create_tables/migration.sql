@@ -3,7 +3,7 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" VARCHAR(128) NOT NULL,
     "disabled" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "airlines" (
 -- CreateTable
 CREATE TABLE "airline_clubs" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(80) NOT NULL,
     "website" VARCHAR(255),
     "phone" VARCHAR(30),
     "disabled" BOOLEAN NOT NULL DEFAULT false,
@@ -40,7 +40,7 @@ CREATE TABLE "airline_clubs" (
 -- CreateTable
 CREATE TABLE "bank_clubs" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(80) NOT NULL,
     "website" VARCHAR(255),
     "phone" VARCHAR(30),
     "disabled" BOOLEAN NOT NULL DEFAULT false,
@@ -77,9 +77,9 @@ CREATE TABLE "wallet_types" (
 -- CreateTable
 CREATE TABLE "wallets" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(80) NOT NULL,
     "description" VARCHAR(255),
-    "initial_balance" DECIMAL(65,30) DEFAULT 0,
+    "balance" DECIMAL(65,30) DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "wallet_type_id" TEXT NOT NULL,
@@ -88,6 +88,21 @@ CREATE TABLE "wallets" (
     "airline_club_id" TEXT,
 
     CONSTRAINT "wallets_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "transactions" (
+    "id" TEXT NOT NULL,
+    "description" VARCHAR(255),
+    "amount_origin" DECIMAL(65,30) NOT NULL,
+    "amount_destination" DECIMAL(65,30) NOT NULL,
+    "value" DECIMAL(65,30),
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "wallet_origin_id" TEXT NOT NULL,
+    "wallet_destination_id" TEXT NOT NULL,
+
+    CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -122,3 +137,9 @@ ALTER TABLE "wallets" ADD CONSTRAINT "wallets_bank_club_id_fkey" FOREIGN KEY ("b
 
 -- AddForeignKey
 ALTER TABLE "wallets" ADD CONSTRAINT "wallets_airline_club_id_fkey" FOREIGN KEY ("airline_club_id") REFERENCES "airline_clubs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_wallet_origin_id_fkey" FOREIGN KEY ("wallet_origin_id") REFERENCES "wallets"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_wallet_destination_id_fkey" FOREIGN KEY ("wallet_destination_id") REFERENCES "wallets"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

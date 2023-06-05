@@ -18,7 +18,6 @@ export interface IWallet {
 export interface IWalletCreate {
   name: string;
   description: string;
-  balance: number;
   accountId: string;
   bankClubId: string;
   airlineClubId: string;
@@ -28,7 +27,6 @@ export class WalletRepository {
   async createWalletService({
     name,
     description,
-    balance,
     accountId,
     bankClubId,
     airlineClubId
@@ -67,7 +65,6 @@ export class WalletRepository {
         data: {
           name,
           description,
-          balance,
           accountId,
           bankClubId,
           airlineClubId,

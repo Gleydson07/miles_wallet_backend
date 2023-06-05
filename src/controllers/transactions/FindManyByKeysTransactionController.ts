@@ -3,7 +3,7 @@ import { TransactionRepository } from "../../repositories/Transactions";
 
 export class FindManyByKeysTransactionController {
   async handle(request: Request, response: Response) {
-    const data: unknown = request.params;
+    const data: unknown = request.query;
     const {
       userId,
       accountId,
