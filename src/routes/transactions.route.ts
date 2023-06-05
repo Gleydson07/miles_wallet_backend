@@ -14,6 +14,6 @@ const findManyByKeysTransactionController = new FindManyByKeysTransactionControl
 transactionRouter.post("/", createTransactionController.handle);
 transactionRouter.delete("/:id", deleteTransactionController.handle);
 transactionRouter.get("/:id", findByIdTransactionController.handle);
-transactionRouter.get("/:userId/user", findManyByKeysTransactionController.handle);
+transactionRouter.get("/", findManyByKeysTransactionController.handle);
 
 export { transactionRouter };

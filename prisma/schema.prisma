@@ -103,7 +103,7 @@ model Wallet {
   id                        String                @id @default(uuid())
   name                      String                @db.VarChar(80)
   description               String?               @db.VarChar(255)
-  balance                   Decimal?              @default(0)                         @map("initial_balance")
+  balance                   Decimal?              @default(0)                         @map("balance")
   createdAt                 DateTime              @default(now())                     @map("created_at")
   updatedAt                 DateTime              @updatedAt                          @map("updated_at")
 
