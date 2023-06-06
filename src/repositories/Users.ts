@@ -40,6 +40,29 @@ export class UserRepository {
     }
   }
 
+  async loginService({ email, password }: Partial<IUserCreate>) {
+    try {
+      const user = await prismaClient.user.findFirst({
+        where: {
+          AND: [
+            { email: email! },
+            { password: password! }
+          ]
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          accounts: true,
+        }
+      });
+
+      return user;
+    } catch ( error: any ) {
+      ErrorHandler(error);
+    }
+  }
+
   async enableUserService({ id }: Partial<IUser>) {
     try {
       const user = await prismaClient.user.findUnique({ where: { id } });
